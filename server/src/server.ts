@@ -38,7 +38,7 @@ const client = new twitterIssuer.Client({
 
 // --------------- Session type augmentation ---------------
 
-declare module 'cookie-session' {
+declare namespace CookieSessionInterfaces {
   interface CookieSessionObject {
     codeVerifier?: string;
     state?: string;
