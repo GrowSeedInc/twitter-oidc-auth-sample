@@ -61,5 +61,8 @@ export default tseslint.config(
         ...globals.node,
       },
     },
+    rules: {
+      "@typescript-eslint/no-namespace": ["error", { allowDeclarations: true }],
+    },
   },
 );

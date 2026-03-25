@@ -113,7 +113,7 @@ export default function App() {
           setState('unauthenticated');
           return;
         }
-        const json = await res.json();
+        const json: unknown = await res.json();
         const parsed = MeResponseSchema.safeParse(json);
         if (parsed.success) {
           setUser(parsed.data.user);

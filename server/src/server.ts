@@ -38,16 +38,18 @@ const client = new twitterIssuer.Client({
 
 // --------------- Session type augmentation ---------------
 
-declare namespace CookieSessionInterfaces {
-  interface CookieSessionObject {
-    codeVerifier?: string;
-    state?: string;
-    user?: {
-      id: string;
-      name: string;
-      username: string;
-      profile_image_url?: string;
-    };
+declare global {
+  namespace CookieSessionInterfaces {
+    interface CookieSessionObject {
+      codeVerifier?: string;
+      state?: string;
+      user?: {
+        id: string;
+        name: string;
+        username: string;
+        profile_image_url?: string;
+      };
+    }
   }
 }
 
@@ -88,7 +90,8 @@ app.get('/api/auth/login', (req, res) => {
 });
 
 // GET /api/auth/callback
-app.get('/api/auth/callback', async (req, res) => {
+app.get('/api/auth/callback', (req, res) => {
+  void (async () => {
   try {
     const codeVerifier = req.session!.codeVerifier;
     const sessionState = req.session!.state;
@@ -140,6 +143,7 @@ app.get('/api/auth/callback', async (req, res) => {
     console.error('Callback error:', err);
     res.status(500).send('Authentication failed');
   }
+  })();
 });
 
 // GET /api/auth/me
