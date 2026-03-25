@@ -1,0 +1,10 @@
+{
+  "name": "twitter-oidc-auth-sample",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run build --prefix client && npm run build --prefix server",
+    "start": "node server/dist/server.js",
+    "install:all": "npm install && npm install --prefix client && npm install --prefix server"
+  }
+}
