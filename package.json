@@ -5,6 +5,14 @@
   "scripts": {
     "build": "npm run build --prefix client && npm run build --prefix server",
     "start": "node server/dist/server.js",
-    "install:all": "npm install && npm install --prefix client && npm install --prefix server"
+    "install:all": "npm install && npm install --prefix client && npm install --prefix server",
+    "lint": "eslint \"client/src/**/*.{ts,tsx}\" \"server/src/**/*.ts\""
+  },
+  "devDependencies": {
+    "eslint": "^9.39.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.4.0",
+    "typescript-eslint": "^8.57.2"
   }
 }

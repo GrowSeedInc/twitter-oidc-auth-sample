@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "ts-node-dev --respawn src/server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "../node_modules/.bin/eslint \"src/**/*.ts\""
   },
   "dependencies": {
     "cookie-session": "^2.1.0",
