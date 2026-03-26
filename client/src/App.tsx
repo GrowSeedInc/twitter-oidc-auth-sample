@@ -8,6 +8,8 @@ import {
   Typography,
   CircularProgress,
 } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Confetti from 'react-confetti';
 import { z } from 'zod';
 
 // --------------- Zod schemas ---------------
@@ -62,16 +64,28 @@ function LoginPage() {
 
 // --------------- ProfilePage ---------------
 
-function ProfilePage({ user, onLogout }: { user: User; onLogout: () => void }) {
+function ProfilePage({ user, onLogout, showSuccess }: { user: User; onLogout: () => void; showSuccess: boolean }) {
   return (
     <Box
       display="flex"
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
+      flexDirection="column"
+      gap={2}
     >
+      {showSuccess && <Confetti />}
+      {showSuccess && (
+        <Typography variant="h6" fontWeight={700} color="success.main">
+          ログインに成功しました🎉
+        </Typography>
+      )}
       <Card sx={{ minWidth: 320, textAlign: 'center', p: 2 }}>
         <CardContent>
+          <Box display="flex" justifyContent="center" alignItems="center" gap={0.5} mb={1}>
+            <CheckCircleIcon sx={{ color: 'green', fontSize: 18 }} />
+            <Typography variant="body2" fontWeight={600}>ログイン中</Typography>
+          </Box>
           <Avatar
             src={user.profile_image_url}
             alt={user.name}
@@ -105,6 +119,7 @@ type AppState = 'loading' | 'unauthenticated' | 'authenticated';
 export default function App() {
   const [state, setState] = useState<AppState>('loading');
   const [user, setUser] = useState<User | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     fetch('/api/auth/me')
@@ -118,6 +133,10 @@ export default function App() {
         if (parsed.success) {
           setUser(parsed.data.user);
           setState('authenticated');
+          if (!sessionStorage.getItem('login_success_shown')) {
+            setShowSuccess(true);
+            sessionStorage.setItem('login_success_shown', 'true');
+          }
         } else {
           console.error('Unexpected /api/auth/me shape', parsed.error);
           setState('unauthenticated');
@@ -127,6 +146,7 @@ export default function App() {
   }, []);
 
   const handleLogout = () => {
+    sessionStorage.removeItem('login_success_shown');
     window.location.href = '/api/auth/logout';
   };
 
@@ -139,7 +159,7 @@ export default function App() {
   }
 
   if (state === 'authenticated' && user) {
-    return <ProfilePage user={user} onLogout={handleLogout} />;
+    return <ProfilePage user={user} onLogout={handleLogout} showSuccess={showSuccess} />;
   }
 
   return <LoginPage />;
