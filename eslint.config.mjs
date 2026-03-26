@@ -3,6 +3,7 @@ import tseslint from "typescript-eslint";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import globals from "globals";
+import tsdocPlugin from "eslint-plugin-tsdoc";
 
 export default tseslint.config(
   // グローバル ignores
@@ -23,6 +24,7 @@ export default tseslint.config(
     plugins: {
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,
+      tsdoc: tsdocPlugin,
     },
     languageOptions: {
       parserOptions: {
@@ -42,6 +44,7 @@ export default tseslint.config(
       "react/react-in-jsx-scope": "off", // React 17+ JSX transform
       "react/prop-types": "off",         // TypeScript で代替
       "@typescript-eslint/no-unused-vars": "off", // tsconfig の noUnusedLocals で対応済み
+      "tsdoc/syntax": "warn",
     },
   },
 
@@ -52,6 +55,9 @@ export default tseslint.config(
   })),
   {
     files: ["server/src/**/*.ts"],
+    plugins: {
+      tsdoc: tsdocPlugin,
+    },
     languageOptions: {
       parserOptions: {
         project: "./server/tsconfig.json",
@@ -63,6 +69,7 @@ export default tseslint.config(
     },
     rules: {
       "@typescript-eslint/no-namespace": ["error", { allowDeclarations: true }],
+      "tsdoc/syntax": "warn",
     },
   },
 );
